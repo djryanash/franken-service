@@ -13,6 +13,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Zip application
+        run: zip -r application.zip .  # Zip the entire repository
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
@@ -25,8 +28,8 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: ${{ vars.AWS_BEANSTALK_APP_NAME }}  # Use variable
-          environment_name: ${{ vars.AWS_BEANSTALK_ENV_NAME }}  # Use variable
+          application_name: ${{ vars.AWS_BEANSTALK_APP_NAME }}
+          environment_name: ${{ vars.AWS_BEANSTALK_ENV_NAME }}
           region: ${{ secrets.AWS_REGION }}
-          version_label: "v1.0.0-${{ github.sha }}"  # Customize version label
-          deployment_package: .  # Deploy the entire repo
+          version_label: "v1.0.0-${{ github.sha }}"
+          deployment_package: application.zip  # Deploy the ZIP file
