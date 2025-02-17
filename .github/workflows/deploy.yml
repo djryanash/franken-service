@@ -32,5 +32,5 @@ jobs:
           application_name: ${{ vars.AWS_BEANSTALK_APP_NAME }}
           environment_name: ${{ vars.AWS_BEANSTALK_ENV_NAME }}
           region: ${{ secrets.AWS_REGION }}
-          version_label: "v1.0.1-${{ github.sha }}"
+          version_label: "v1.0.2-${{ github.sha }}"
           deployment_package: application.zip  # Deploy the ZIP file
