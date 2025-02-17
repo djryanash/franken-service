@@ -1,1 +1,1 @@
-web: PORT=8080 ./main
+web: PORT=5000 ./main
