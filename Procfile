@@ -1,1 +1,1 @@
-web: PORT=5000 ./main
+web: ./main
