@@ -1,1 +1,1 @@
-web: PORT=8080 go run main.go 
+web: PORT=8080 ./main

@@ -19,12 +19,13 @@ jobs:
         with:
           go-version: '1.24'
 
-      # - name: Build Go Binary
-      #   run: |
-      #     echo "Building the Go binary..."
-      #     go mod tidy
-      #     go build -o main.go
-      #     echo "Build complete."
+      - name: Build Go Binary
+        run: |
+          echo "Building the Go binary..."
+          go mod tidy
+          go build -o main
+          chmod +x ./main # Only make it executable
+          echo "Build complete."
 
       - name: Zip application
         run: |
