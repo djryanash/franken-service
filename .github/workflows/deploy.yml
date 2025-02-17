@@ -17,15 +17,26 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v3
         with:
-          go-version: '1.24'  # Use the Go version required by your project
+          go-version: '1.24'
 
       - name: Build Go Binary
         run: |
+          echo "Building the Go binary..."
           go mod tidy
           go build -o main.go
+          echo "Build complete."
 
       - name: Zip application
-        run: zip -r application.zip .  # Zip the entire repository
+        run: |
+          echo "Zipping application..."
+          zip -r application.zip .
+          echo "Zipping complete."
+
+      - name: List zip file contents
+        run: |
+          echo "Listing contents of the ip file..."
+          unzip -l application.zip 
+          echo "Listing complete."
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
