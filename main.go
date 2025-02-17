@@ -2,7 +2,7 @@ package main
 
 import (
 	"net/http"
-
+	"os"
 	"github.com/gin-gonic/gin"
 )
 
@@ -28,7 +28,18 @@ func main() {
 	router.GET("/albums/:id", getAlbumByID)
 	router.POST("/albums", postAlbums)
 
-	router.Run("localhost:8080")
+	// Check if we are in a development or production environment
+	env := os.Getenv("ENV")
+	if env == "production" {
+			port := os.Getenv("PORT")
+			if port == "" {
+					port = "5000" // Default to 5000 on Elastic Beanstalk
+			}
+			router.Run(":" + port)
+	} else {
+			// Local environment
+			router.Run("localhost:8080")
+	}
 }
 
 // getAlbums responds with the list of all albums.
