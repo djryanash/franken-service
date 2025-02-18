@@ -51,8 +51,8 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: ${{ vars.AWS_BEANSTALK_APP_NAME }}
-          environment_name: ${{ vars.AWS_BEANSTALK_ENV_NAME }}
+          application_name: ${{ secrets.AWS_BEANSTALK_APP_NAME }}
+          environment_name: ${{ secrets.AWS_BEANSTALK_ENV_NAME }}
           region: ${{ secrets.AWS_REGION }}
           version_label: "v1.0.2-${{ github.sha }}"
           deployment_package: application.zip  # Deploy the ZIP file
