@@ -56,3 +56,4 @@ jobs:
           region: ${{ secrets.AWS_REGION }}
           version_label: "v1.0.2-${{ github.sha }}"
           deployment_package: application.zip  # Deploy the ZIP file
+          use_existing_version_if_available: true 
