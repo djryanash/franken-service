@@ -24,6 +24,17 @@ go.work.sum
 # env file
 .env
 
+# log files
+*.log
+
+# tmp files, directories, executables, and other temporary files
+*.tmp
+temp.*
+*.temp
+*.tmp.*
+main
+amazon-trusted-proxies.json
+
 .DS_Store
 applet
 application.linux-arm64
