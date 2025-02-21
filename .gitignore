@@ -25,7 +25,8 @@ go.work.sum
 .env
 
 # log files
-*.log
+# *.log
+build-errors.log
 
 # tmp files, directories, executables, and other temporary files
 *.tmp
