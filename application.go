@@ -8,7 +8,7 @@ import (
 	"time"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
-
+	
 )
 
 // album represents data about a record album.
@@ -58,115 +58,117 @@ func main() {
 	setProxyError := router.SetTrustedProxies(trustedProxies)
 	if setProxyError != nil {
 		log.Fatal("Error setting trusted proxies:", setProxyError)
-	} else {
-		log.Println("Trusted proxies set: ", len(trustedProxies))
+		} else {
+			log.Println("Trusted proxies set: ", len(trustedProxies))
+		}
+		
+		
+		// Serve static files.
+		//router.StaticFile("/", "./static/index.html")
+		
+		// Routes.
+		router.GET("/", getRoot)
+		router.GET("/albums", getAlbums)
+		router.GET("/albums/:id", getAlbumByID)
+		router.POST("/albums", postAlbums)
+		
+		// Check if we are in a development or production environment.
+		env := os.Getenv("ENV")
+		port := os.Getenv("PORT")
+		log.Println("ENV: " + env)
+		log.Println("PORT: " + port)
+		
+		// Use PORT environment variable or default to 5000 if not set (for production)
+		if port == "" {
+			port = "5000" 
+		}
+		
+		if env == "" {
+			env = "production"
+		}
+		
+		router.Run(":" + port)
+		
+		
 	}
 	
-	
-	// Serve static files.
-	//router.StaticFile("/", "./static/index.html")
-	
-	// Routes.
-	router.GET("/", getRoot)
-	router.GET("/albums", getAlbums)
-	router.GET("/albums/:id", getAlbumByID)
-	router.POST("/albums", postAlbums)
-	
-	// Check if we are in a development or production environment.
-	env := os.Getenv("ENV")
-	port := os.Getenv("PORT")
-	log.Println("ENV: " + env)
-	log.Println("PORT: " + port)
-	
-	// Use PORT environment variable or default to 5000 if not set (for production)
-	if port == "" {
-		port = "5000" 
+	// getRoot returns the root path.
+	func getRoot(context *gin.Context) {
+		path := "This is the root path"
+		
+		context.IndentedJSON(http.StatusOK, gin.H{"message": path})
+		
+		
 	}
 	
-	if env == "" {
-		env = "production"
+	// getAlbums responds with the list of all albums.
+	func getAlbums(context *gin.Context) {
+		context.IndentedJSON(http.StatusOK, albums)
 	}
 	
-	router.Run(":" + port)
-	
-	
-}
-
-// getRoot returns the root path.
-func getRoot(context *gin.Context) {
-	path := "This is the root path"
-	
-	context.IndentedJSON(http.StatusOK, gin.H{"message": path})
-	
-	
-}
-
-// getAlbums responds with the list of all albums.
-func getAlbums(context *gin.Context) {
-	context.IndentedJSON(http.StatusOK, albums)
-}
-
-// postAlbums adds an album from JSON to newAlbum.
-func postAlbums(c *gin.Context) {
-	
-	var newAlbum album
-	
-	// Call BindJSON to bind the received JSON to a newAlbum.
-	if err := c.BindJSON(&newAlbum); err != nil {
-		return 
-	}
-	
-	// Add the new album to the slice.
-	albums = append(albums, newAlbum)
-	c.IndentedJSON(http.StatusCreated, newAlbum)
-	
-}
-
-// getAlbumByID locates the album whose ID value matches the ID
-// parameter sent by the client, then returns that album as a response.
-func getAlbumByID(c *gin.Context) {
-	id := c.Param("id")
-	
-	// Loop over the list of albums looking for
-	// an album whos ID value matches the parameter.
-	
-	for _, a := range albums {
-		if a.ID == id {
-			c.IndentedJSON(http.StatusOK, a)
+	// postAlbums adds an album from JSON to newAlbum.
+	func postAlbums(c *gin.Context) {
+		
+		var newAlbum album
+		
+		// Call BindJSON to bind the received JSON to a newAlbum.
+		if err := c.BindJSON(&newAlbum); err != nil {
 			return 
 		}
-	}
-	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "album not found"})
-	
-}
-
-var myClient = &http.Client{Timeout: 10 * time.Second}
-
-func getProxies() ([]string, error) {
-	
-	var proxyList ProxyList
-	var result []string
-	
-	url := "https://ip-ranges.amazonaws.com/ip-ranges.json"
-	
-	response, err := myClient.Get(url)
-	if err != nil {
-		return result,err
+		
+		// Add the new album to the slice.
+		albums = append(albums, newAlbum)
+		c.IndentedJSON(http.StatusCreated, newAlbum)
+		
 	}
 	
-	defer response.Body.Close()
-	
-	json.NewDecoder(response.Body).Decode(&proxyList)
-
-	filterRegion := "us-east-1"
-	
-	for _, proxy := range proxyList.Proxies {
-		if proxy.Region == filterRegion {
-			result = append(result, proxy.IPPrefix)
-
+	// getAlbumByID locates the album whose ID value matches the ID
+	// parameter sent by the client, then returns that album as a response.
+	func getAlbumByID(c *gin.Context) {
+		id := c.Param("id")
+		
+		// Loop over the list of albums looking for
+		// an album whos ID value matches the parameter.
+		
+		for _, a := range albums {
+			if a.ID == id {
+				c.IndentedJSON(http.StatusOK, a)
+				return 
+			}
 		}
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "album not found"})
+		
 	}
-	return result, nil
 	
-}
-
+	var myClient = &http.Client{Timeout: 10 * time.Second}
+	
+	func getProxies() ([]string, error) {
+		
+		var proxyList ProxyList
+		var result []string
+		result = append(result, "127.0.0.1")
+		
+		url := "https://ip-ranges.amazonaws.com/ip-ranges.json"
+		
+		response, err := myClient.Get(url)
+		if err != nil {
+			return result,err
+		}
+		
+		defer response.Body.Close()
+		
+		json.NewDecoder(response.Body).Decode(&proxyList)
+		
+		filterRegion := "us-east-1"
+		
+		for _, proxy := range proxyList.Proxies {
+			if proxy.Region == filterRegion {
+				result = append(result, proxy.IPPrefix)
+				
+			}
+		}
+		return result, nil
+		
+	}
+	
+	
