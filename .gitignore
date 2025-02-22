@@ -22,8 +22,8 @@ go.work
 go.work.sum
 
 # env file
-.env
-.editorconfig
+# .env
+# .editorconfig
 
 # log files
 # *.log
