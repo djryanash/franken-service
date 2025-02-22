@@ -28,6 +28,7 @@ go.work.sum
 # log files
 # *.log
 build-errors.log
+redacted-logs.log
 unsafe-logs.log 
 
 # tmp files, directories, executables, and other temporary files
