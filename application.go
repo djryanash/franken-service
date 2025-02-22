@@ -42,12 +42,6 @@ var albums = []album{
 
 func main() {
 	
-	// Load the .env file
-	err := godotenv.Load()
-	if err != nil {
-		panic("Error loading .env file")
-	}
-	
 	router := gin.Default()
 	
 	trustedProxies, err := getProxies()
