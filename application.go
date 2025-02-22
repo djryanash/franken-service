@@ -87,7 +87,7 @@ func main() {
 			env = "production"
 		}
 		
-		router.Run(":" + port)
+		router.Run("0.0.0.0:" + port)
 		
 		
 	}
