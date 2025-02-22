@@ -9,7 +9,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: ${{false && github.event_name == 'push' && github.ref == 'refs/heads/main' }}  # Skip if not a push to main or if false 
+    if: ${{false && github.event_name == 'push' && github.ref == 'refs/heads/main' }}  # Skip if not a push to main or if false
 
     steps:
       - name: Checkout code
