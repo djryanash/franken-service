@@ -23,7 +23,23 @@ go.work.sum
 
 # env file
 .env
-# .editorconfig
+.editorconfig
+.python-version
+.ruby-version
+.nvmrc
+.npmrc
+.yarnrc
+.yarnrc.yml
+.pnpmfile.cjs
+.pnpmfile.js
+.pnpm-lock.yaml
+.pnpmfile.mjs
+.pnpmfile.ts
+.pnpmfile.cjs
+.pnpmfile.js
+.pnpm-lock.yaml
+.pnpmfile.mjs
+.pnpmfile.ts
 
 # log files
 *.log
@@ -32,12 +48,14 @@ redacted-logs.log
 unsafe-logs.log 
 
 # tmp files, directories, executables, and other temporary files
+temp/*
+tmp/*
 *.tmp
 temp.*
 *.temp
 *.tmp.*
-main
 amazon-trusted-proxies.json
+
 
 .DS_Store
 applet
@@ -49,3 +67,4 @@ application.windows32
 application.windows64
 application.macosx
 out
+
