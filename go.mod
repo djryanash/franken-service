@@ -1,4 +1,4 @@
-module github.com/djryanash/web-service-gin
+module github.com/djryanash/franken-service
 
 go 1.24.0
 
