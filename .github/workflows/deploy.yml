@@ -1,4 +1,7 @@
 name: GitHub Deploy Workflow
+permissions:
+  contents: read
+  pull-requests: write
 
 on:
   workflow_dispatch:
@@ -48,7 +51,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Deploy to Elastic Beanstalk
-        uses: einaregilsson/beanstalk-deploy@v21
+        uses: einaregilsson/beanstalk-deploy@c165ccc34505f88f983d5cb58bfc5acbe7ffd1af
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
