@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"os"
 	"time"
-
+	"math/rand/v2"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -56,11 +56,9 @@ func main() {
 	if env == "" {
 		env = "production"
 	}
-	
 	if port == "" {
 		port = "5000" 
 	}
-	
 	if base_url == "" {
 		base_url = "0.0.0.0:"
 	}	
@@ -99,7 +97,6 @@ func main() {
 	// getRoot returns the root path.
 	func getRoot(context *gin.Context) {
 		path := "This is the root path"
-		
 		context.IndentedJSON(http.StatusOK, gin.H{"message": path})
 		
 		
@@ -145,11 +142,24 @@ func main() {
 	}
 
 	func getNewUUID(c *gin.Context) {
-		params := c.Params
-		println("Params: ", params)
-		
+		// 8-4-4-4-12 format all lowercase = 36 total loops
+		// XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+		// --------8---13---18---23------------
+		uuid := ""
 		hexes := []string {"0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"}
-		println("Hexes:", len(hexes))
+
+		for i := 0; i < 36; i++ {
+			c := len(hexes) - 1
+			r := rand.IntN(c)
+			log.Println("r: ", r)
+			if i == 8 || i == 13 || i == 18 || i == 23 {
+				uuid = uuid + "-"
+			} else {
+				uuid = uuid + hexes[r]
+			}
+		}
+
+		c.IndentedJSON(http.StatusOK, uuid)
 
 	}
 	
