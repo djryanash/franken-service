@@ -159,7 +159,7 @@ func main() {
 			}
 		}
 
-		c.IndentedJSON(http.StatusOK, uuid)
+		c.IndentedJSON(http.StatusOK, gin.H{"unique-uuid": uuid})
 
 	}
 	
