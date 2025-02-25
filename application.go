@@ -6,8 +6,9 @@ import (
 	"net/http"
 	"os"
 	"time"
+
 	"github.com/gin-gonic/gin"
-	
+	"github.com/joho/godotenv"
 )
 
 // album represents data about a record album.
@@ -40,7 +41,31 @@ var albums = []album{
 }
 
 func main() {
+
+	godotenv.Load()
+
+	// Check if we are in a development or production environment.
+	env := os.Getenv("ENV")
+	port := os.Getenv("PORT")
+	base_url := os.Getenv("BASE_URL")
+	log.Println("ENV: " + env)
+	log.Println("PORT: " + port)
+	log.Println("BASE_URL: " + base_url)
 	
+	// Use PORT environment variable or default to 5000 if not set (for production)
+	if env == "" {
+		env = "production"
+	}
+	
+	if port == "" {
+		port = "5000" 
+	}
+	
+	if base_url == "" {
+		base_url = "0.0.0.0:"
+	}	
+
+
 	router := gin.Default()
 	
 	trustedProxies, err := getProxies()
@@ -63,24 +88,10 @@ func main() {
 		router.GET("/", getRoot)
 		router.GET("/albums", getAlbums)
 		router.GET("/albums/:id", getAlbumByID)
+		router.GET("/get-new-uuid", getNewUUID)
 		router.POST("/albums", postAlbums)
 		
-		// Check if we are in a development or production environment.
-		env := os.Getenv("ENV")
-		port := os.Getenv("PORT")
-		log.Println("ENV: " + env)
-		log.Println("PORT: " + port)
-		
-		// Use PORT environment variable or default to 5000 if not set (for production)
-		if port == "" {
-			port = "5000" 
-		}
-		
-		if env == "" {
-			env = "production"
-		}
-		
-		router.Run("0.0.0.0:" + port)
+		router.Run(base_url + port)
 		
 		
 	}
@@ -131,6 +142,15 @@ func main() {
 		}
 		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "album not found"})
 		
+	}
+
+	func getNewUUID(c *gin.Context) {
+		params := c.Params
+		println("Params: ", params)
+		
+		hexes := []string {"0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"}
+		println("Hexes:", len(hexes))
+
 	}
 	
 	var myClient = &http.Client{Timeout: 10 * time.Second}
