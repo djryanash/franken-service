@@ -96,8 +96,9 @@ func main() {
 	
 	// getRoot returns the root path.
 	func getRoot(context *gin.Context) {
-		path := "This is the root path"
-		context.IndentedJSON(http.StatusOK, gin.H{"message": path})
+		params := context.Params
+		// path := "This is the root path"
+		context.IndentedJSON(http.StatusOK, gin.H{"message": params})
 		
 		
 	}
